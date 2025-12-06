@@ -29,7 +29,7 @@ const onSubmit = async (event : FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     try {
-        const response = await ApiClient.post("/singup", form)
+        const response = await ApiClient.post("/signup", form)
 
         console.log(response);
     } catch (error) {
@@ -38,7 +38,7 @@ const onSubmit = async (event : FormEvent<HTMLFormElement>) => {
 }
 
     return <div className="container mx-auto">
-        <h1>Sing Up</h1>
+        <h1>Sign Up</h1>
         <Form onSubmit={onSubmit}>
             <Form.Group className="mb-3" controlId="formUsername">
                 <Form.Label>Username</Form.Label>

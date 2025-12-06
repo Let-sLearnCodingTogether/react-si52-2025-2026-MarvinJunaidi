@@ -69,7 +69,7 @@ function AddMovie() {
                         value = {form.sutradara}
                         onChange={handInputChange}
                         name="sutradara" 
-                        type="text" 
+                        type="text"
                         placeholder="Sutradara"/> 
                         <br></br>
                 </Form.Group>
