@@ -1,6 +1,6 @@
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { Button, Form } from "react-bootstrap"
-import { NavLink } from "react-router"
+import { NavLink, useParams } from "react-router"
 import ApiClient from "../../utils/ApiClient"
 
 interface FormMovie {
@@ -9,12 +9,40 @@ interface FormMovie {
     sutradara : string
 }
 
-function AddMovie() {
+interface ResponseData{
+    data : {
+        _id : string,
+        judul : string,
+        sutradara : string,
+        tahunRilis : string,
+        createdAt : string,
+        createdBy : string,
+        updateAt : string,
+        __v : string
+    },
+    message : string
+}
+
+function EditMovie() {
+    const params = useParams()
     const [form, setForm] = useState<FormMovie>({
-        judul : "",
-        tahunRilis : "",
-        sutradara : ""
+        judul :"",
+        tahunRilis :"",
+        sutradara :""
     })
+
+    const fetchMovies = useCallback(async () => {
+        const response = await ApiClient.get(`/movie/${params.id}`)
+
+        if(response.status === 200) {
+            const ResponseData : ResponseData = response.data
+            setForm({
+                judul : ResponseData.data.judul,
+                tahunRilis : ResponseData.data.tahunRilis,
+                sutradara : ResponseData.data.sutradara
+            })
+        }
+    }, [params])
 
     const handInputChange = (event : ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target
@@ -35,10 +63,12 @@ function AddMovie() {
             console.log(error)
         }
     }
+    
+    useEffect(() => {fetchMovies()}, [fetchMovies])
 
     return <div className="container mx-auto">
         <div className ="d-flex justify-content-between mb-3">
-            <h2> Add Movie Page </h2>
+            <h2> Edit Movie Page </h2>
             <NavLink to="/" className="btn btn-primary"> List Movie </NavLink>
         </div>
         <div>
@@ -80,4 +110,4 @@ function AddMovie() {
     </div>
 }
 
-export default AddMovie
+export default EditMovie
