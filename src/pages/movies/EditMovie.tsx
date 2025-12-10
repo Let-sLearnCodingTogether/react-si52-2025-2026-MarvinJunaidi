@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { Button, Form } from "react-bootstrap"
-import { NavLink, useParams } from "react-router"
+import { NavLink, replace, useNavigate, useParams } from "react-router"
 import ApiClient from "../../utils/ApiClient"
 
 interface FormMovie {
@@ -25,6 +25,7 @@ interface ResponseData{
 
 function EditMovie() {
     const params = useParams()
+    const navigate = useNavigate()
     const [form, setForm] = useState<FormMovie>({
         judul :"",
         tahunRilis :"",
@@ -57,8 +58,8 @@ function EditMovie() {
         event.preventDefault();
 
         try {
-            const response = await ApiClient.post('/movie', form)
-            console.log(response)
+            const response = await ApiClient.put(`/movie/${params.id}`, form)
+            navigate("/movie", {replace : true})
         } catch (error) {
             console.log(error)
         }
